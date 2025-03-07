@@ -11,7 +11,7 @@ function get_unit_ip {
   juju show-unit "$1" 2>/dev/null | grep -o " \(public-\)\?address: [0-9.]\+" | cut -d' ' -f3
 }
 
-# V3
+# V3 (modified)
 function get_unit_password {
   if [[ -z "$1" ]]; then
     echo "get_unit_password: unit is not specified" >&2
