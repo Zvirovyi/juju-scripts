@@ -11,13 +11,14 @@ function get_unit_ip {
   juju show-unit "$1" 2>/dev/null | grep -o " \(public-\)\?address: [0-9.]\+" | cut -d' ' -f3
 }
 
-# V3
+# V4
 function get_unit_password {
   if [[ -z "$1" ]]; then
     echo "get_unit_password: unit is not specified" >&2
     exit 1
   fi
-  juju run "$1" get-password 2>/dev/null | grep -o "password: [0-9a-zA-Z]\+" | cut -d' ' -f2
+  application=$(echo "$1" | cut -d "/" -f 1)
+  juju show-secret --reveal "database-peers.$application.app" --format json | jq -r '.[].content.Data."operator-password"'
 }
 
 unit_ip=$(get_unit_ip "$1")
